@@ -5,7 +5,7 @@ import {gtPlugins} from './plugins.config';
 
 const config: Config = {
   title: 'GT Plugin Docs',
-  tagline: 'GT 마인크래프트 플러그인 사용자 · 개발자 문서',
+  tagline: 'GT 마인크래프트 플러그인 사용자, 개발자 문서',
   favicon: 'img/favicon.ico',
 
   future: {v4: true},
