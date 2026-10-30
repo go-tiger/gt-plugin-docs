@@ -9,25 +9,27 @@ title: 시작하기
 
 ## 1. 치지직 앱 등록
 
-[치지직 Developers](https://developers.chzzk.naver.com)에서 앱을 등록하고 **Client ID**와 **Client Secret**을 발급받습니다.
+[치지직 Developers](https://developers.chzzk.naver.com)에서 앱을 등록하고 **Client ID**와 **Client Secret**을
+발급받습니다.
 
 앱 등록 시 다음 API Scope를 선택합니다.
 
-| Scope | 용도 |
-|---|---|
-| 유저 조회 | OAuth 로그인 후 채널 정보 확인 |
-| 채팅 메시지 조회 | 채팅 수신 (`ChatEvent`) |
-| 후원 조회 | 후원 수신 (`DonationEvent`) |
+| Scope            | 용도                           |
+| ---------------- | ------------------------------ |
+| 유저 조회        | OAuth 로그인 후 채널 정보 확인 |
+| 채팅 메시지 조회 | 채팅 수신 (`ChatEvent`)        |
+| 후원 조회        | 후원 수신 (`DonationEvent`)    |
 
-**Redirect URI**는 다음 단계의 설정값으로 만들어지는 주소를 그대로 등록합니다. → [Redirect URI 규칙](./chzzk/config.md#redirect-uri)
+**Redirect URI**는 다음 단계의 설정값으로 만들어지는 주소를 그대로 등록합니다. →
+[Redirect URI 규칙](./chzzk/config.md#redirect-uri)
 
 ## 2. GTDonation-Chzzk 설정
 
 `plugins/GTDonationChzzk/config.yml`을 수정합니다.
 
 ```yaml title="plugins/GTDonationChzzk/config.yml"
-CLIENT_ID: "발급받은 Client ID"
-CLIENT_SECRET: "발급받은 Client Secret"
+CLIENT_ID: '발급받은 Client ID'
+CLIENT_SECRET: '발급받은 Client Secret'
 displayHost: play.example.com:20154
 port: 20154
 https: false

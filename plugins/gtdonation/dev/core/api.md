@@ -5,7 +5,8 @@ title: API
 
 # GTDonationAPI
 
-Core 이벤트를 발생시키는 정적 메서드 모음입니다. 플랫폼 연동 플러그인을 직접 만들거나, 테스트용으로 후원을 흉내 낼 때 사용합니다.
+Core 이벤트를 발생시키는 정적 메서드 모음입니다. 플랫폼 연동 플러그인을 직접 만들거나, 테스트용으로 후원을 흉내 낼 때
+사용합니다.
 
 `dev.gotiger.gTDonationCore.api.GTDonationAPI`
 
@@ -29,7 +30,8 @@ depend: [GTDonationCore]
 
 ## 메서드
 
-모두 `Bukkit.getPluginManager().callEvent()`를 그대로 호출합니다. **메인 스레드에서 호출하세요.** 비동기 스레드에서 받은 데이터라면 `Bukkit.getScheduler().runTask(...)`로 넘긴 뒤 호출합니다.
+모두 `Bukkit.getPluginManager().callEvent()`를 그대로 호출합니다. **메인 스레드에서 호출하세요.** 비동기 스레드에서 받은
+데이터라면 `Bukkit.getScheduler().runTask(...)`로 넘긴 뒤 호출합니다.
 
 ### callDonationEvent
 

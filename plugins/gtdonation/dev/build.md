@@ -13,11 +13,11 @@ cd ../GTDonationChzzk && ./gradlew build
 cd ../GTDonationEvent && ./gradlew build
 ```
 
-| 모듈 | 결과물 | 비고 |
-|---|---|---|
-| Core | `build/libs/GTDonation-Core-<버전>.jar` | `dev.gotiger:GTDonationCore:<버전>`으로 배포 |
+| 모듈  | 결과물                                   | 비고                                             |
+| ----- | ---------------------------------------- | ------------------------------------------------ |
+| Core  | `build/libs/GTDonation-Core-<버전>.jar`  | `dev.gotiger:GTDonationCore:<버전>`으로 배포     |
 | Chzzk | `build/libs/GTDonation-Chzzk-<버전>.jar` | shadow JAR (chzzk4j, sqlite-jdbc, org.json 포함) |
-| Event | `build/libs/GTDonation-Event-<버전>.jar` | |
+| Event | `build/libs/GTDonation-Event-<버전>.jar` |                                                  |
 
 ## Core 버전을 올릴 때
 
