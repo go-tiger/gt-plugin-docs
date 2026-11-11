@@ -4,4 +4,5 @@ export type GTPlugin = { id: string; name: string; summary: string };
 export const gtPlugins: GTPlugin[] = [
   { id: 'gtdebt', name: 'GTDebt', summary: '빚 시스템' },
   { id: 'gtdonation', name: 'GTDonation', summary: '방송 후원 연동 시스템' },
+  { id: 'gtstarter', name: 'GTStarter', summary: '초반 지급템 시스템' },
 ];
