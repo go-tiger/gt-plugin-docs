@@ -7,4 +7,5 @@ export const gtPlugins: GTPlugin[] = [
   { id: 'gtstarter', name: 'GTStarter', summary: '초반 지급템 시스템' },
   { id: 'gtstorage', name: 'GTStorage', summary: '개인 창고 시스템' },
   { id: 'gtestate', name: 'GTEstate', summary: '부동산 시스템' },
+  { id: 'gtwoodcutter', name: 'GTWoodcutter', summary: '벌목 시스템' },
 ];
