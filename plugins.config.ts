@@ -13,4 +13,5 @@ export const gtPlugins: GTPlugin[] = [
   { id: 'gtvault', name: 'GTVault', summary: '경제 시스템' },
   { id: 'gtrandombox', name: 'GTRandomBox', summary: '랜덤박스 시스템' },
   { id: 'gthardcoreversus', name: 'GTHardcoreVersus', summary: '하드코어 팀전 시스템' },
+  { id: 'gtmine', name: 'GTMine', summary: '광산 리젠 시스템' },
 ];
