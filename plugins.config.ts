@@ -10,4 +10,5 @@ export const gtPlugins: GTPlugin[] = [
   { id: 'gtwoodcutter', name: 'GTWoodcutter', summary: '벌목 시스템' },
   { id: 'gtquest', name: 'GTQuest', summary: '퀘스트 시스템' },
   { id: 'gtelevator', name: 'GTElevator', summary: '엘리베이터 시스템' },
+  { id: 'gtvault', name: 'GTVault', summary: '경제 시스템' },
 ];
