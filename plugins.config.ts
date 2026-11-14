@@ -16,4 +16,5 @@ export const gtPlugins: GTPlugin[] = [
   { id: 'gtmine', name: 'GTMine', summary: '광산 리젠 시스템' },
   { id: 'gtsupplydrop', name: 'GTSupplyDrop', summary: '보급 상자 시스템' },
   { id: 'gtlootchest', name: 'GTLootChest', summary: '전리품 상자 시스템' },
+  { id: 'gtbattlezone', name: 'GTBattleZone', summary: '배틀로얄 자기장 시스템' },
 ];
