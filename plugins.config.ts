@@ -15,4 +15,5 @@ export const gtPlugins: GTPlugin[] = [
   { id: 'gthardcoreversus', name: 'GTHardcoreVersus', summary: '하드코어 팀전 시스템' },
   { id: 'gtmine', name: 'GTMine', summary: '광산 리젠 시스템' },
   { id: 'gtsupplydrop', name: 'GTSupplyDrop', summary: '보급 상자 시스템' },
+  { id: 'gtlootchest', name: 'GTLootChest', summary: '전리품 상자 시스템' },
 ];
