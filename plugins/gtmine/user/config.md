@@ -120,6 +120,7 @@ areas:
 | `area-started`          | `%area%`, `%count%`                   | `start` 완료                       |
 | `area-restarted`        | `%area%`, `%count%`                   | `restart` 완료                     |
 | `area-stopped`          | `%area%`                              | `stop` 완료                        |
+| `area-name-too-long`    | `%max%`                               | 광산 이름이 최대 길이(64자)를 넘음 |
 | `area-already-active`   | `%area%`                              | 이미 채굴 모드                     |
 | `area-already-inactive` | `%area%`                              | 이미 배치 모드                     |
 | `area-no-points`        | `%area%`                              | 포인트 없음                        |
@@ -194,6 +195,7 @@ messages:
   area-started: '&a[%area%] 광산이 &e채굴 모드&a로 전환되었습니다. &7(포인트 %count%개)'
   area-restarted: '&a[%area%] 광산이 &e채굴 모드&a로 (재)적용되었습니다. &7(포인트 %count%개)'
   area-stopped: '&7[%area%] 광산이 &e배치 모드&7로 전환되었습니다.'
+  area-name-too-long: '&c광산 이름은 %max%자 이하로 입력해주세요.'
   area-already-active: '&c[%area%] 광산은 이미 채굴 모드입니다.'
   area-already-inactive: '&c[%area%] 광산은 이미 배치 모드입니다.'
   area-no-points: '&c[%area%] 광산에 등록된 리젠 포인트가 없습니다.'

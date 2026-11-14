@@ -93,29 +93,30 @@ Skript 등으로 경제를 늦게 등록하는 서버라면 `enabled: true`로 �
 
 **관리자**
 
-| 키                        | 치환자                                   | 사용 시점                   |
-| ------------------------- | ---------------------------------------- | --------------------------- |
-| `no-permission`           |                                          | 권한 없음                   |
-| `player-only`             |                                          | 콘솔에서 `create` 실행      |
-| `usage`                   |                                          | 명령어 형식 오류            |
-| `reloaded`                |                                          | 다시 불러오기 완료          |
-| `player-not-found`        | `%player%`                               | 접속 이력이 없는 닉네임     |
-| `sign-not-found`          |                                          | 바라보는 곳에 표시판 없음   |
-| `sign-already-registered` | `%name%`                                 | 이미 등록된 표시판          |
-| `sign-protected`          |                                          | 등록된 표시판 파괴 시도     |
-| `estate-created`          | `%name%`, `%type%`, `%price%`            | 등록 완료                   |
-| `estate-removed`          | `%name%`                                 | 등록 해제 완료              |
-| `estate-not-found`        | `%name%`                                 | 없는 매물 이름              |
-| `estate-name-duplicate`   |                                          | 같은 이름이 이미 있음       |
-| `price-updated`           | `%name%`, `%price%`                      | 가격 변경 완료              |
-| `price-invalid`           |                                          | 가격이 1 이상의 정수가 아님 |
-| `owner-set`               | `%name%`, `%player%`                     | 소유자 지정 완료            |
-| `owner-cleared`           | `%name%`                                 | 판매 중으로 변경 완료       |
-| `type-invalid`            |                                          | 종류가 HOUSE, CAFE가 아님   |
-| `list-header`             | `%count%`                                | 목록 제목                   |
-| `list-entry-sale`         | `%name%`, `%type%`, `%price%`            | 판매 중 항목                |
-| `list-entry-sold`         | `%name%`, `%type%`, `%price%`, `%owner%` | 판매 완료 항목              |
-| `list-empty`              |                                          | 매물 없음                   |
+| 키                        | 치환자                                   | 사용 시점                     |
+| ------------------------- | ---------------------------------------- | ----------------------------- |
+| `no-permission`           |                                          | 권한 없음                     |
+| `player-only`             |                                          | 콘솔에서 `create` 실행        |
+| `usage`                   |                                          | 명령어 형식 오류              |
+| `reloaded`                |                                          | 다시 불러오기 완료            |
+| `player-not-found`        | `%player%`                               | 접속 이력이 없는 닉네임       |
+| `sign-not-found`          |                                          | 바라보는 곳에 표시판 없음     |
+| `sign-already-registered` | `%name%`                                 | 이미 등록된 표시판            |
+| `sign-protected`          |                                          | 등록된 표시판 파괴 시도       |
+| `estate-created`          | `%name%`, `%type%`, `%price%`            | 등록 완료                     |
+| `estate-removed`          | `%name%`                                 | 등록 해제 완료                |
+| `estate-not-found`        | `%name%`                                 | 없는 매물 이름                |
+| `estate-name-duplicate`   |                                          | 같은 이름이 이미 있음         |
+| `estate-name-too-long`    | `%max%`                                  | 이름이 최대 길이(64자)를 넘음 |
+| `price-updated`           | `%name%`, `%price%`                      | 가격 변경 완료                |
+| `price-invalid`           |                                          | 가격이 1 이상의 정수가 아님   |
+| `owner-set`               | `%name%`, `%player%`                     | 소유자 지정 완료              |
+| `owner-cleared`           | `%name%`                                 | 판매 중으로 변경 완료         |
+| `type-invalid`            |                                          | 종류가 HOUSE, CAFE가 아님     |
+| `list-header`             | `%count%`                                | 목록 제목                     |
+| `list-entry-sale`         | `%name%`, `%type%`, `%price%`            | 판매 중 항목                  |
+| `list-entry-sold`         | `%name%`, `%type%`, `%price%`, `%owner%` | 판매 완료 항목                |
+| `list-empty`              |                                          | 매물 없음                     |
 
 ## 기본 설정 파일
 
@@ -183,6 +184,7 @@ messages:
   estate-removed: '&a매물 &f%name% &a을(를) 등록 해제했습니다.'
   estate-not-found: '&c%name% 매물을 찾을 수 없습니다.'
   estate-name-duplicate: '&c이미 같은 이름의 매물이 있습니다.'
+  estate-name-too-long: '&c매물 이름은 %max%자 이하로 입력해주세요.'
   price-updated: '&a%name% 매물의 가격을 &e%price%원&a으로 변경했습니다.'
   price-invalid: '&c가격은 0보다 큰 정수여야 합니다.'
   owner-set: '&a%name% 매물의 소유자를 &f%player% &a님으로 지정했습니다.'

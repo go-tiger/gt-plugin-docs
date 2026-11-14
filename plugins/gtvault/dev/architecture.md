@@ -7,14 +7,14 @@ title: 구조
 
 ## 패키지
 
-| 패키지                | 역할                                                                                            |
-| --------------------- | ----------------------------------------------------------------------------------------------- |
-| `dev.gotiger.gTVault` | 메인 클래스. 캐시 로드, Vault 등록, `getWalletService()` 제공                                   |
-| `command`             | `/gtvault`, `/소지금`. 개인 소지금(`MoneyCommand`)과 지갑(`WalletCommand`) 로직 분리            |
-| `database`            | SQLite 연결과 단일 DB 스레드, 테이블별 저장소, `Wallet`, `WalletContribution`                   |
-| `economy`             | 개인 소지금(`BalanceService`), 공용 지갑(`WalletService`), Vault 구현체(`VaultEconomyProvider`) |
-| `target`              | 이름 또는 UUID 문자열을 UUID로 변환(`TargetResolver`)                                           |
-| `util`                | 메시지, 숫자 포맷                                                                               |
+| 패키지                | 역할                                                                                                              |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `dev.gotiger.gTVault` | 메인 클래스. 캐시 로드, Vault 등록, `getWalletService()` 제공                                                     |
+| `command`             | `/gtvault`, `/소지금`. 개인 소지금(`MoneyCommand`)과 지갑(`WalletCommand`) 로직 분리                              |
+| `database`            | DB 백엔드(GTDatabase 공용 또는 자체 SQLite) 선택, 단일 DB 스레드, 테이블별 저장소, `Wallet`, `WalletContribution` |
+| `economy`             | 개인 소지금(`BalanceService`), 공용 지갑(`WalletService`), Vault 구현체(`VaultEconomyProvider`)                   |
+| `target`              | 이름 또는 UUID 문자열을 UUID로 변환(`TargetResolver`)                                                             |
+| `util`                | 메시지, 숫자 포맷                                                                                                 |
 
 ## 캐시 우선 쓰기
 
@@ -26,15 +26,31 @@ Vault 호출 / 명령어
   │  UUID(또는 지갑 키)별 ReentrantLock
   │  메모리 캐시에서 계산하고 바로 반영
   ▼  결과 즉시 반환
-  └─▶ DB 스레드: 잔고 저장 + 거래 로그 (비동기)
+  └─▶ DB 스레드: 잔고 증감 + 거래 로그를 한 트랜잭션으로 (비동기)
 ```
 
 - 서버 시작 시 모든 개인 잔고와 지갑을 DB에서 읽어 캐시에 올립니다. 이 작업이 끝날 때까지 `onEnable`이
   기다립니다(`join()`).
 - 같은 대상의 잔고 변경은 락으로 직렬화됩니다. 그래서 출금은 "확인한 뒤 차감"이 아니라 락 안에서 비교와 차감을 한 번에
   합니다(`withdrawIfSufficient`).
+- DB에는 계산한 잔고를 덮어쓰지 않고 증감분을 더합니다(`balance = balance + ?`). 관리자 `set`만 값을 덮어씁니다.
 - 종료 시 DB 스레드에 남은 쓰기를 최대 10초 기다립니다. 서버가 비정상 종료되면 마지막 몇 건의 변경이 DB에 저장되지 않을
   수 있습니다.
+
+## DB 백엔드
+
+`DatabaseManager`는 활성화할 때 `DbBackend` 구현을 하나 고릅니다.
+
+| 구현                | 선택 조건                                   | 커넥션                                                                 |
+| ------------------- | ------------------------------------------- | ---------------------------------------------------------------------- |
+| `GTDatabaseBackend` | GTDatabase가 켜져 있고 서비스가 등록돼 있음 | 작업마다 공용 풀에서 빌리고 반납. 종료 시 풀은 닫지 않음               |
+| `SqliteBackend`     | 그 밖의 경우                                | `gtvault.db` 커넥션 하나를 공유. `close()`해도 실제로 닫히지 않는 래퍼 |
+
+- SQL 방언 차이는 `SqlDialect`(upsert, `upsertAdd`, `insertIgnore`, 타입 이름 등)가 처리합니다. 저장소 코드는 DB 종류로
+  분기하지 않습니다.
+- GTDatabase API를 import하는 클래스는 `GTDatabaseBackend` 하나뿐입니다. GTDatabase가 없는 서버에서
+  `NoClassDefFoundError`가 나지 않게 하기 위해서입니다.
+- 여러 SQL을 함께 바꾸는 작업은 `DatabaseManager.inTransaction()`으로 묶습니다.
 
 ## 개인 소지금
 

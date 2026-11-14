@@ -7,18 +7,20 @@ title: 구조
 
 ## 패키지
 
-| 클래스               | 역할                                      |
-| -------------------- | ----------------------------------------- |
-| `GTJumpPad`          | 초기화. DB 연결 실패 시 플러그인 비활성화 |
-| `JumpPadCommand`     | `/gtjumppad` 명령어, 탭 완성              |
-| `DatabaseManager`    | SQLite 연결, 스키마, 단일 DB 스레드       |
-| `JumpPadRepository`  | 테이블 입출력                             |
-| `JumpPadItem`        | 등록된 블록(템플릿) 관리, PDC 태그 판별   |
-| `JumpPadRegistry`    | 설치 좌표 메모리 캐시                     |
-| `LaunchService`      | 발사 조건, 속도 계산, 효과, 낙하 보호     |
-| `BlockListener`      | 설치, 파괴, 폭발, 불, 피스톤, 소멸 추적   |
-| `PlayerMoveListener` | 이동 감지 진입점, 접속 종료 시 상태 정리  |
-| `FallDamageListener` | 낙하 피해 취소                            |
+| 클래스               | 역할                                                                     |
+| -------------------- | ------------------------------------------------------------------------ |
+| `GTJumpPad`          | 초기화. DB 연결 실패 시 플러그인 비활성화                                |
+| `JumpPadCommand`     | `/gtjumppad` 명령어, 탭 완성                                             |
+| `DatabaseManager`    | DB 백엔드(GTDatabase 공용 또는 자체 SQLite) 선택, 스키마, 단일 DB 스레드 |
+| `GTDatabaseBackend`  | GTDatabase 공용 연결. GTDatabase API를 import하는 유일한 클래스          |
+| `SqliteBackend`      | GTDatabase가 없을 때 쓰는 `gtjumppad.db` 연결                            |
+| `JumpPadRepository`  | 테이블 입출력                                                            |
+| `JumpPadItem`        | 등록된 블록(템플릿) 관리, PDC 태그 판별                                  |
+| `JumpPadRegistry`    | 설치 좌표 메모리 캐시                                                    |
+| `LaunchService`      | 발사 조건, 속도 계산, 효과, 낙하 보호                                    |
+| `BlockListener`      | 설치, 파괴, 폭발, 불, 피스톤, 소멸 추적                                  |
+| `PlayerMoveListener` | 이동 감지 진입점, 접속 종료 시 상태 정리                                 |
+| `FallDamageListener` | 낙하 피해 취소                                                           |
 
 ## 아이템 판별과 좌표 추적
 
@@ -75,4 +77,5 @@ DB 작업은 데몬 스레드 `GTJumpPad-DB` 하나에서 순서대로 실행합
 
 ## 외부 연동
 
-공개 API나 커스텀 이벤트는 없습니다. 점프패드 좌표를 알려면 `gtjumppad.db`의 `jumppad_blocks`를 읽어야 합니다.
+공개 API나 커스텀 이벤트는 없습니다. 점프패드 좌표를 알려면 `gtjumppad.db`의 `jumppad_blocks`를 읽어야
+합니다(GTDatabase를 쓰면 공용 DB의 `gt_jumppad_jumppad_blocks`).

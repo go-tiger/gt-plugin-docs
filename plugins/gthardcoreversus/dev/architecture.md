@@ -7,18 +7,18 @@ title: 구조
 
 ## 패키지
 
-| 패키지                         | 역할                                                                                      |
-| ------------------------------ | ----------------------------------------------------------------------------------------- |
-| `dev.gotiger.gTHardcoreVersus` | 메인 클래스. 구성 요소 조립, 첫 틱에 월드 세트 생성, 정적 API 진입점                      |
-| `command`                      | `/gthardcoreversus`                                                                       |
-| `database`                     | SQLite 연결과 단일 DB 스레드, 팀(`TeamRepository`), 부활 타이머(`RespawnTimerRepository`) |
-| `team`                         | `Team`(A, B), `TeamState`, 배정, 상태, 기록 캐시(`TeamService`)                           |
-| `respawn`                      | 사망, 관전, 부활(`RespawnService`, `RespawnTimerTask`)                                    |
-| `wipe`                         | 전멸 판정, 즉사, 월드 세트 교체, 미리 생성, 일괄 삭제(`TeamWipeService`)                  |
-| `world`                        | Multiverse 호출(`MultiverseBridge`)                                                       |
-| `spectate`                     | 관전 순간이동 제한                                                                        |
-| `win`                          | 엔더 드래곤 처치로 승리 판정                                                              |
-| `util`                         | 메시지, 사운드                                                                            |
+| 패키지                         | 역할                                                                                                                                                                                                                     |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `dev.gotiger.gTHardcoreVersus` | 메인 클래스. 구성 요소 조립, 첫 틱에 월드 세트 생성, 정적 API 진입점                                                                                                                                                     |
+| `command`                      | `/gthardcoreversus`                                                                                                                                                                                                      |
+| `database`                     | DB 백엔드(GTDatabase 공용 또는 자체 SQLite) 선택과 단일 DB 스레드, 팀(`TeamRepository`), 부활 타이머(`RespawnTimerRepository`). 테이블은 접두사 없는 이름으로 부르고 백엔드가 `gthcvs_` 또는 `gt_hardcoreversus_`를 붙임 |
+| `team`                         | `Team`(A, B), `TeamState`, 배정, 상태, 기록 캐시(`TeamService`)                                                                                                                                                          |
+| `respawn`                      | 사망, 관전, 부활(`RespawnService`, `RespawnTimerTask`)                                                                                                                                                                   |
+| `wipe`                         | 전멸 판정, 즉사, 월드 세트 교체, 미리 생성, 일괄 삭제(`TeamWipeService`)                                                                                                                                                 |
+| `world`                        | Multiverse 호출(`MultiverseBridge`)                                                                                                                                                                                      |
+| `spectate`                     | 관전 순간이동 제한                                                                                                                                                                                                       |
+| `win`                          | 엔더 드래곤 처치로 승리 판정                                                                                                                                                                                             |
+| `util`                         | 메시지, 사운드                                                                                                                                                                                                           |
 
 ## 캐시
 

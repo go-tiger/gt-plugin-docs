@@ -13,7 +13,7 @@ GTStarter는 외부에 공개하는 API나 이벤트가 없습니다.
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `dev.gotiger.gTStarter` | 메인 클래스 `GTStarter`. 구성 요소 조립                                                                                          |
 | `command`               | `/gtstarter` 명령어                                                                                                              |
-| `database`              | SQLite 연결과 단일 DB 스레드(`DatabaseManager`)                                                                                  |
+| `database`              | DB 백엔드(GTDatabase 공용 또는 자체 SQLite) 선택과 단일 DB 스레드(`DatabaseManager`)                                             |
 | `economy`               | Vault 연동(`VaultHook`). 경제 서비스가 늦게 등록되는 경우 재시도                                                                 |
 | `gui`                   | 지급 아이템 편집 GUI와 저장 리스너                                                                                               |
 | `kit`                   | 지급 목록(`KitManager`), 지급 기록(`GrantDataManager`), 지급 처리(`KitGrantService`), 보류 지급 주기 작업(`PendingDeliveryTask`) |
@@ -39,7 +39,9 @@ PlayerJoinEvent
 
 ## 동시성
 
-- 모든 DB 작업은 `GTStarter-DB` 단일 스레드에서 순서대로 실행됩니다.
+- 모든 DB 작업은 `GTStarter-DB` 단일 스레드에서 순서대로 실행됩니다. GTDatabase를 쓰면 작업마다 공용 풀에서 커넥션을
+  빌리고 반납합니다.
+- 지급 목록 저장과 보류 아이템 교체처럼 지우고 다시 넣는 작업은 `DatabaseManager.inTransaction()`으로 묶습니다.
 - 지급 목록은 메모리(`CopyOnWriteArrayList`)에 올려 두고 읽기는 메모리에서만 합니다. 쓰기는 DB에 비동기로 반영합니다.
 - 접속 지급, 보류 지급 주기, `give` 명령어가 같은 플레이어를 동시에 처리하면 아이템이 중복 지급될 수 있습니다. 그래서
   `GrantDataManager.beginProcessing()`으로 플레이어별 처리 중 상태를 걸고, 이미 처리 중이면 건너뜁니다.
@@ -53,6 +55,17 @@ PlayerJoinEvent
 | 지급 기록 조회 실패         | "지급됨"으로 간주해 중복 지급 방지                                           |
 | 편집 GUI 닫기               | GUI 안 아이템은 사본이므로 플레이어에게 돌려주지 않음 (돌려주면 복제 버그)   |
 | 저장된 아이템 역직렬화 실패 | 서버 버전 변경 등. 그 항목만 건너뛰고 경고 로그                              |
+
+## DB 백엔드
+
+| 구현                | 선택 조건                                   | 커넥션                                                                   |
+| ------------------- | ------------------------------------------- | ------------------------------------------------------------------------ |
+| `GTDatabaseBackend` | GTDatabase가 켜져 있고 서비스가 등록돼 있음 | 작업마다 공용 풀에서 빌리고 반납. 종료 시 풀은 닫지 않음                 |
+| `SqliteBackend`     | 그 밖의 경우                                | `gtstarter.db` 커넥션 하나를 공유. `close()`해도 실제로 닫히지 않는 래퍼 |
+
+- SQL 방언 차이는 `SqlDialect`가 처리합니다. 저장소 코드는 DB 종류로 분기하지 않습니다.
+- GTDatabase API를 import하는 클래스는 `GTDatabaseBackend` 하나뿐입니다.
+- 지급 기록은 키가 겹치면 무시하는 INSERT로 남깁니다. 이미 기록이 있으면 처음 시각이 유지됩니다.
 
 ## 아이템 저장
 

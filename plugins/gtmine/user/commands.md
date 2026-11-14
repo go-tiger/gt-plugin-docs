@@ -32,14 +32,15 @@ title: 명령어
 
 ## 실패 메시지
 
-| 상황                                 | 메시지                  |
-| ------------------------------------ | ----------------------- |
-| `config.yml`에도, 마커에도 없는 광산 | `area-not-found`        |
-| 이미 채굴 모드인데 `start`           | `area-already-active`   |
-| 이미 배치 모드인데 `stop`            | `area-already-inactive` |
-| 포인트가 하나도 없음                 | `area-no-points`        |
-| 확률 풀이 없거나 모든 가중치가 0     | `area-invalid-pool`     |
-| `clear`할 광물 포인트가 없음         | `area-no-ore-points`    |
+| 상황                                        | 메시지                  |
+| ------------------------------------------- | ----------------------- |
+| `config.yml`에도, 마커에도 없는 광산        | `area-not-found`        |
+| 광산 이름이 64자를 넘음 (`give`, `setarea`) | `area-name-too-long`    |
+| 이미 채굴 모드인데 `start`                  | `area-already-active`   |
+| 이미 배치 모드인데 `stop`                   | `area-already-inactive` |
+| 포인트가 하나도 없음                        | `area-no-points`        |
+| 확률 풀이 없거나 모든 가중치가 0            | `area-invalid-pool`     |
+| `clear`할 광물 포인트가 없음                | `area-no-ore-points`    |
 
 마커를 설치하거나 `give -area`로 지급하기만 해도 광산 이름이 목록에 생깁니다. 하지만 `config.yml`에 확률 풀이 없으면
 `start`할 수 없습니다.

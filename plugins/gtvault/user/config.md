@@ -51,6 +51,7 @@ title: 설정
 | `wallet-usage`          |                                   | 형식 오류. 금액이 잘못됐을 때도 나옴         |
 | `wallet-created`        | `%name%`                          | 생성                                         |
 | `wallet-already-exists` |                                   | 같은 이름이 이미 있음                        |
+| `wallet-name-too-long`  | `%max%`                           | 이름이 최대 길이(64자)를 넘음                |
 | `wallet-not-found`      | `%name%`                          | 없는 지갑                                    |
 | `wallet-enabled`        | `%name%`                          | 활성화                                       |
 | `wallet-disabled`       | `%name%`                          | 비활성화                                     |
@@ -93,6 +94,7 @@ messages:
   wallet-usage: '&7사용법: &f/gtvault wallet <create|enable|disable|delete|list|balance|give|take|set|top> ...'
   wallet-created: '&a지갑 &e%name%&a을(를) 생성했습니다. &7(기본 비활성 상태)'
   wallet-already-exists: '&c이미 존재하는 지갑입니다.'
+  wallet-name-too-long: '&c지갑 이름은 %max%자 이하로 입력해주세요.'
   wallet-not-found: '&c%name% 지갑을 찾을 수 없습니다.'
   wallet-enabled: '&a지갑 &e%name%&a을(를) 활성화했습니다.'
   wallet-disabled: '&7지갑 &e%name%&7을(를) 비활성화했습니다.'

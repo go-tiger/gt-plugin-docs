@@ -13,6 +13,7 @@ title: 설치하기
 | Java | 17 이상                                             |
 
 다른 플러그인은 필요 없습니다. SQLite 드라이버는 JAR에 들어 있습니다.
+[GTDatabase](https://github.com/go-tiger/GTDatabase)가 설치돼 있으면 `gtjumppad.db` 대신 GTDatabase의 공용 DB를 씁니다.
 
 ## 설치
 
@@ -23,10 +24,19 @@ title: 설치하기
 
 :::warning
 
-`gtjumppad.db`에 등록한 블록과 설치된 점프패드 좌표가 모두 들어 있습니다. 지우면 설치해 둔 점프패드가 모두 일반 블록이
-됩니다.
+`gtjumppad.db`(GTDatabase를 쓰면 공용 DB)에 등록한 블록과 설치된 점프패드 좌표가 모두 들어 있습니다. 지우면 설치해 둔
+점프패드가 모두 일반 블록이 됩니다.
 
 :::
+
+## GTDatabase와 함께 쓰기
+
+1. GTDatabase를 설치하고 설정합니다.
+2. 서버를 실행하고 로그에서 `[GTJumpPad] 데이터베이스: GTDatabase(...) 공용 연결을 사용합니다.`를 확인합니다.
+3. 이미 `gtjumppad.db`로 쓰던 데이터가 있다면 콘솔에서 `/gtdatabase migrate jumppad plugins/GTJumpPad/gtjumppad.db`로
+   옮긴 뒤 서버를 재시작합니다.
+
+GTDatabase가 설치돼 있어도 공용 연결에 실패하면 자체 SQLite로 동작합니다.
 
 ## 직접 빌드하기
 

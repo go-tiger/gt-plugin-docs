@@ -7,16 +7,16 @@ title: 구조
 
 ## 패키지
 
-| 패키지                 | 역할                                                                                                            |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `dev.gotiger.gTEstate` | 메인 클래스 `GTEstate`. 구성 요소 조립, `getEstateManager()` 제공                                               |
-| `command`              | `/gtestate`                                                                                                     |
-| `database`             | SQLite 연결과 단일 DB 스레드(`DatabaseManager`), 테이블 입출력(`EstateRepository`)                              |
-| `economy`              | Vault 연동(`VaultHook`). 경제 서비스가 늦게 등록되는 경우 재시도                                                |
-| `estate`               | `Estate`, `EstateType`, 캐시와 CRUD(`EstateManager`), 구매 처리(`PurchaseService`)                              |
-| `listener`             | 표시판 클릭(`SignInteractListener`), 보호(`SignProtectListener`), 청크 로드 시 표시판 갱신(`ChunkLoadListener`) |
-| `sign`                 | 표시판 형식(`SignFormat`)과 렌더링(`SignRenderer`)                                                              |
-| `util`                 | 메시지                                                                                                          |
+| 패키지                 | 역할                                                                                                                    |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `dev.gotiger.gTEstate` | 메인 클래스 `GTEstate`. 구성 요소 조립, `getEstateManager()` 제공                                                       |
+| `command`              | `/gtestate`                                                                                                             |
+| `database`             | DB 백엔드(GTDatabase 공용 또는 자체 SQLite) 선택과 단일 DB 스레드(`DatabaseManager`), 테이블 입출력(`EstateRepository`) |
+| `economy`              | Vault 연동(`VaultHook`). 경제 서비스가 늦게 등록되는 경우 재시도                                                        |
+| `estate`               | `Estate`, `EstateType`, 캐시와 CRUD(`EstateManager`), 구매 처리(`PurchaseService`)                                      |
+| `listener`             | 표시판 클릭(`SignInteractListener`), 보호(`SignProtectListener`), 청크 로드 시 표시판 갱신(`ChunkLoadListener`)         |
+| `sign`                 | 표시판 형식(`SignFormat`)과 렌더링(`SignRenderer`)                                                                      |
+| `util`                 | 메시지                                                                                                                  |
 
 ## 캐시
 
@@ -36,12 +36,24 @@ title: 구조
   │  권한, 판매 여부, 경제 연동, 소지금 조건, 최대 소유 수 확인
   │  processing에 매물 ID 등록 (이미 있으면 purchase-busy)
   │  소지금 차감
-  ▼  DB 스레드: UPDATE ... WHERE id = ? AND owner_uuid IS NULL
+  ▼  DB 스레드 (한 트랜잭션): UPDATE ... WHERE id = ? AND owner_uuid IS NULL, 1행이면 BUY 이력 기록
   ▼  메인 스레드
-  ├─ 갱신 1행 ──▶ 거래 이력 기록, 캐시와 표시판 갱신, 알림
+  ├─ 갱신 1행 ──▶ 캐시와 표시판 갱신, 알림
   └─ 0행 또는 오류 ──▶ 차감한 금액 환불, purchase-failed
 ```
 
 Vault 호출은 메인 스레드에서 해야 안전하므로 소지금을 먼저 차감합니다. 같은 매물을 두 사람이 동시에 사는 경우는
 `processing` 플래그와 `owner_uuid IS NULL` 조건부 UPDATE 두 겹으로 막습니다. 환불까지 실패하면 플레이어, UUID, 금액을
 SEVERE 로그로 남깁니다.
+
+## DB 백엔드
+
+| 구현                | 선택 조건                                   | 커넥션                                                                  |
+| ------------------- | ------------------------------------------- | ----------------------------------------------------------------------- |
+| `GTDatabaseBackend` | GTDatabase가 켜져 있고 서비스가 등록돼 있음 | 작업마다 공용 풀에서 빌리고 반납. 종료 시 풀은 닫지 않음                |
+| `SqliteBackend`     | 그 밖의 경우                                | `gtestate.db` 커넥션 하나를 공유. `close()`해도 실제로 닫히지 않는 래퍼 |
+
+- SQL 방언 차이는 `SqlDialect`가 처리합니다. 저장소 코드는 DB 종류로 분기하지 않습니다.
+- GTDatabase API를 import하는 클래스는 `GTDatabaseBackend` 하나뿐입니다.
+- 새 매물의 ID는 `prepareStatement(sql, new String[]{"id"})`로 받습니다. PostgreSQL에서도 생성된 키를 돌려받기
+  위해서입니다.

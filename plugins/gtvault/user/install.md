@@ -15,6 +15,9 @@ title: 설치하기
 
 Vault가 없으면 GTVault가 로드되지 않습니다.
 
+[GTDatabase](https://github.com/go-tiger/GTDatabase)는 선택 사항입니다. 설치돼 있으면 GTVault가 GTDatabase의 공용 DB를
+쓰고, 없으면 자체 SQLite 파일(`gtvault.db`)을 씁니다.
+
 :::warning EssentialsX 등 **다른 경제 플러그인과 함께 쓰지 마세요.** Vault에는 경제 서비스가 하나만 쓰이는데, 여러 개가
 등록되면 어느 쪽이 쓰일지 알기 어렵습니다. EssentialsX를 쓴다면 경제 기능을 끄거나 다른 경제 플러그인을 제거하세요. :::
 
@@ -23,14 +26,25 @@ Vault가 없으면 GTVault가 로드되지 않습니다.
 1. `GTVault-<버전>.jar`를 서버의 `plugins/` 폴더에 넣습니다.
 2. 서버를 실행합니다. 다음 파일이 자동으로 생성됩니다.
 
-| 파일                         | 설명                                                        |
-| ---------------------------- | ----------------------------------------------------------- |
-| `plugins/GTVault/config.yml` | 통화 이름과 표시 형식, 메시지                               |
-| `plugins/GTVault/gtvault.db` | 소지금, 공용 지갑, 거래 로그를 저장하는 SQLite 데이터베이스 |
+| 파일                         | 설명                                                                                           |
+| ---------------------------- | ---------------------------------------------------------------------------------------------- |
+| `plugins/GTVault/config.yml` | 통화 이름과 표시 형식, 메시지                                                                  |
+| `plugins/GTVault/gtvault.db` | 소지금, 공용 지갑, 거래 로그를 저장하는 SQLite 데이터베이스. GTDatabase를 쓰면 만들어지지 않음 |
 
 3. 서버 로그에 `Vault Economy 등록 완료`가 나오면 정상입니다.
 
-:::danger `gtvault.db`에는 **모든 플레이어의 돈**이 들어 있습니다. 서버를 백업할 때 꼭 포함하세요. :::
+:::danger 데이터베이스에는 **모든 플레이어의 돈**이 들어 있습니다. 서버를 백업할 때 `gtvault.db`(또는 GTDatabase 공용
+DB)를 꼭 포함하세요. :::
+
+## GTDatabase와 함께 쓰기
+
+1. GTDatabase를 설치하고 설정합니다.
+2. 서버를 실행하고 로그에서 `[GTVault] 데이터베이스: GTDatabase(...) 공용 연결을 사용합니다.`를 확인합니다.
+3. 이미 `gtvault.db`로 쓰던 데이터가 있다면 콘솔에서 `/gtdatabase migrate vault plugins/GTVault/gtvault.db`로 옮긴 뒤
+   서버를 재시작합니다.
+
+GTDatabase가 설치돼 있어도 공용 연결에 실패하면 자체 SQLite로 동작합니다. 자세한 내용은
+[데이터베이스](../dev/database.md) 문서를 참고하세요.
 
 ## 다른 GT 플러그인과 함께 쓰기
 

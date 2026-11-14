@@ -9,16 +9,16 @@ GTMine은 외부에 공개하는 API나 이벤트가 없습니다.
 
 ## 패키지
 
-| 패키지               | 역할                                                                                    |
-| -------------------- | --------------------------------------------------------------------------------------- |
-| `dev.gotiger.gTMine` | 메인 클래스. 구성 요소 조립, 첫 틱에 재시작 복구                                        |
-| `area`               | 광산(`MineArea`), 가중치 풀(`MinePool`), 캐시와 start/stop/restart/clear(`AreaManager`) |
-| `point`              | 리젠 포인트(`MinePoint`), 좌표 캐시(`PointRegistry`), 리젠 타이머(`RegenScheduler`)     |
-| `marker`             | 마커 아이템 PDC(`MarkerItem`)                                                           |
-| `listener`           | 마커 설치와 제거, 채굴, 피스톤과 폭발 보호                                              |
-| `command`            | `/gtmine`                                                                               |
-| `database`           | SQLite 연결과 단일 DB 스레드, 테이블 입출력(`MineRepository`)                           |
-| `util`               | 메시지                                                                                  |
+| 패키지               | 역할                                                                                               |
+| -------------------- | -------------------------------------------------------------------------------------------------- |
+| `dev.gotiger.gTMine` | 메인 클래스. 구성 요소 조립, 첫 틱에 재시작 복구                                                   |
+| `area`               | 광산(`MineArea`), 가중치 풀(`MinePool`), 캐시와 start/stop/restart/clear(`AreaManager`)            |
+| `point`              | 리젠 포인트(`MinePoint`), 좌표 캐시(`PointRegistry`), 리젠 타이머(`RegenScheduler`)                |
+| `marker`             | 마커 아이템 PDC(`MarkerItem`)                                                                      |
+| `listener`           | 마커 설치와 제거, 채굴, 피스톤과 폭발 보호                                                         |
+| `command`            | `/gtmine`                                                                                          |
+| `database`           | DB 백엔드(GTDatabase 공용 또는 자체 SQLite) 선택과 단일 DB 스레드, 테이블 입출력(`MineRepository`) |
+| `util`               | 메시지                                                                                             |
 
 ## 데이터의 출처
 
@@ -85,3 +85,14 @@ GTMine은 외부에 공개하는 API나 이벤트가 없습니다.
 | `gtmine:area`   | STRING | 소속 광산 |
 
 블록으로 설치되면 PDC가 사라지므로, `BlockPlaceEvent`(MONITOR)에서 좌표와 광산을 DB에 기록합니다.
+
+## DB 백엔드
+
+| 구현                | 선택 조건                                   | 커넥션                                                                |
+| ------------------- | ------------------------------------------- | --------------------------------------------------------------------- |
+| `GTDatabaseBackend` | GTDatabase가 켜져 있고 서비스가 등록돼 있음 | 작업마다 공용 풀에서 빌리고 반납. 종료 시 풀은 닫지 않음              |
+| `SqliteBackend`     | 그 밖의 경우                                | `gtmine.db` 커넥션 하나를 공유. `close()`해도 실제로 닫히지 않는 래퍼 |
+
+- SQL 방언 차이는 `SqlDialect`가 처리합니다. 저장소 코드는 DB 종류로 분기하지 않습니다.
+- GTDatabase API를 import하는 클래스는 `GTDatabaseBackend` 하나뿐입니다.
+- 광산 활성 상태는 `UPDATE` 후 행이 없을 때만 INSERT합니다. upsert로 쓰면 `created_at`까지 덮어쓰기 때문입니다.

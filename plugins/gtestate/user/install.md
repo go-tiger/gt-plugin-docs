@@ -15,19 +15,32 @@ title: 설치하기
 
 Vault가 없어도 매물 등록과 표시판 표시는 동작하지만, 구매는 할 수 없습니다(`economy-unavailable`).
 
+[GTDatabase](https://github.com/go-tiger/GTDatabase)는 선택 사항입니다. 설치돼 있으면 GTDatabase의 공용 DB를 쓰고,
+없으면 자체 SQLite 파일(`gtestate.db`)을 씁니다.
+
 ## 설치
 
 1. `GTEstate-<버전>.jar`를 서버의 `plugins/` 폴더에 넣습니다.
 2. 서버를 실행합니다. 다음 파일이 자동으로 생성됩니다.
 
-| 파일                           | 설명                                            |
-| ------------------------------ | ----------------------------------------------- |
-| `plugins/GTEstate/config.yml`  | 구매 규칙, 소유 제한, 표시판 형식, 메시지 설정  |
-| `plugins/GTEstate/gtestate.db` | 매물과 거래 이력을 저장하는 SQLite 데이터베이스 |
+| 파일                           | 설명                                                                               |
+| ------------------------------ | ---------------------------------------------------------------------------------- |
+| `plugins/GTEstate/config.yml`  | 구매 규칙, 소유 제한, 표시판 형식, 메시지 설정                                     |
+| `plugins/GTEstate/gtestate.db` | 매물과 거래 이력을 저장하는 SQLite 데이터베이스. GTDatabase를 쓰면 만들어지지 않음 |
 
 3. [`config.yml`](./config.md)에서 `exact-amount`를 확인합니다. 기본값 `true`는 소지금이 가격과 **정확히 같을 때만**
    구매할 수 있습니다. 일반 상점처럼 가격 이상이면 사게 하려면 `false`로 바꿉니다.
 4. [매물 등록과 구매](./usage.md)를 보고 매물을 등록합니다.
+
+## GTDatabase와 함께 쓰기
+
+1. GTDatabase를 설치하고 설정합니다.
+2. 서버를 실행하고 로그에서 `[GTEstate] 데이터베이스: GTDatabase(...) 공용 연결을 사용합니다.`를 확인합니다.
+3. 이미 `gtestate.db`로 쓰던 데이터가 있다면 콘솔에서 `/gtdatabase migrate estate plugins/GTEstate/gtestate.db`로 옮긴
+   뒤 서버를 재시작합니다.
+
+GTDatabase가 설치돼 있어도 공용 연결에 실패하면 자체 SQLite로 동작합니다. 자세한 내용은
+[데이터베이스](../dev/database.md) 문서를 참고하세요.
 
 ## 직접 빌드하기
 

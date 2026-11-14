@@ -9,14 +9,14 @@ GTElevator는 외부에 공개하는 API나 이벤트가 없습니다.
 
 ## 패키지
 
-| 패키지                   | 역할                                                                                                          |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| `dev.gotiger.gTElevator` | 메인 클래스. 구성 요소 조립, Paper 여부에 따라 점프 리스너 선택                                               |
-| `command`                | `/gtelevator`                                                                                                 |
-| `database`               | SQLite 연결, 스키마, 단일 DB 스레드(`DatabaseManager`), 테이블 입출력(`ElevatorRepository`)                   |
-| `elevator`               | 아이템 템플릿과 PDC 판별(`ElevatorItem`), 설치 좌표 캐시(`ElevatorRegistry`), 이동(`TeleportService`), 쿨다운 |
-| `listener`               | 설치, 파괴, 보호(`BlockListener`), 웅크림(`SneakListener`), 점프(`PaperJumpListener`, `SpigotJumpListener`)   |
-| `util`                   | 아이템 직렬화, 메시지                                                                                         |
+| 패키지                   | 역할                                                                                                                                                                                |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dev.gotiger.gTElevator` | 메인 클래스. 구성 요소 조립, Paper 여부에 따라 점프 리스너 선택                                                                                                                     |
+| `command`                | `/gtelevator`                                                                                                                                                                       |
+| `database`               | DB 백엔드(GTDatabase 공용 또는 자체 SQLite) 선택, 스키마, 단일 DB 스레드(`DatabaseManager`), 테이블 입출력(`ElevatorRepository`). GTDatabase API는 `GTDatabaseBackend`에서만 import |
+| `elevator`               | 아이템 템플릿과 PDC 판별(`ElevatorItem`), 설치 좌표 캐시(`ElevatorRegistry`), 이동(`TeleportService`), 쿨다운                                                                       |
+| `listener`               | 설치, 파괴, 보호(`BlockListener`), 웅크림(`SneakListener`), 점프(`PaperJumpListener`, `SpigotJumpListener`)                                                                         |
+| `util`                   | 아이템 직렬화, 메시지                                                                                                                                                               |
 
 ## 엘리베이터 블록 판별
 
